@@ -1,0 +1,56 @@
+
+# Команда для вывода истории использования команд Git:
+
+history | cut -c 8- | grep git | sort | uniq -c  | sort -n -r | head -n 10
+
+# Git Aliases
+[alias]  
+  co = checkout
+  p = pull
+  ci = commit
+  com = commit -m
+  cob = checkout -b
+  dev = checkout develop
+  cod = "!git co develop; git p; npm i"
+  st = status
+  br = branch
+  done = push origin HEAD
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  re = reset --hard HEAD
+  who = shortlog -s --     
+  diff = diff --word-diff
+  ls = log --format='%Cgreen%H %Cred%ai %Creset- %s'
+  lsb = "for-each-ref --sort=-committerdate --format='%1B[32m%(committerdate:iso8601) %1B[34m%(committerdate:relative)  %1B[0;m%(refname:short)' refs/remotes refs/heads"
+  unstage = 'git reset HEAD --'
+  structure = log --oneline --simplify-by-decoration --graph --all
+  cobf = "!f() { git checkout -b feature/$1; }; f"
+  cobh = "!f() { git checkout -b hotfix/$1; }; f"
+  default = "!git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'"   
+  newb = "!f() { \
+        DEFAULT=$(git default); \
+        git co ${2-$DEFAULT}; \
+        git pull origin ${2-$DEFAULT}; \
+        npm i; \
+        git cob ${1}; \
+      }; f"  
+  bclean = "!f() { \
+        DEFAULT=$(git default); \
+        git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; \
+      }; f" 
+
+
+
+# Terminal Aliases
+alias st='git st'
+alias done='git done'
+alias cod='git cod'
+alias start='npm run start || npm run start:monolith'
+alias link='npm run start-link'
+alias unlink='npm run unlink'
+alias poff='sudo shutdown -h now'
+alias core='cd ~/WorkProjects/front-core/'
+alias grc='cd ~/WorkProjects/grc/'
+alias taxmon='cd ~/WorkProjects/taxmon/'
+alias ui='cd ~/WorkProjects/taxmon-ui/'
+alias gvs='cd ~/WorkProjects/gvs/'
+alias dnm='rm -rf node_modules && npm i'
